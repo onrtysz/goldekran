@@ -1,0 +1,11 @@
+{
+  "name": "goldekran",
+  "version": "1.0.0",
+  "description": "Gold ekran",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
