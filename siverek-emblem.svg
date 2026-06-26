@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="goldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7df93" />
+      <stop offset="100%" stop-color="#b6851d" />
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="#121212" stroke="url(#goldRing)" stroke-width="4" />
+  <circle cx="60" cy="60" r="43" fill="none" stroke="#6f5517" stroke-width="2" />
+  <path d="M60 24l18 9v15c0 17-10 27-18 32-8-5-18-15-18-32V33z" fill="#1a1a1a" stroke="#d4af37" stroke-width="2" />
+  <path d="M60 38l7 7-7 7-7-7z" fill="#f0d98b" />
+  <path d="M50 66l10-6 10 6" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="60" y="100" text-anchor="middle" font-size="11" font-family="Arial, sans-serif" fill="#d4af37">SKD</text>
+</svg>
