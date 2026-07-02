@@ -119,11 +119,17 @@ const AdminPanel = () => {
     return goldPrice;
   };
 
+  const toNum = (v, fallback = 0) => {
+    if (typeof v === 'number') return v;
+    const n = parseFloat(String(v).replace(',', '.'));
+    return isNaN(n) ? fallback : n;
+  };
+
   const calculatePrice = (product, type) => {
     const activePrice = getActiveGoldPrice();
     const basePrice = type === 'buy' ? activePrice.buy : activePrice.sell;
-    const labor = type === 'buy' ? (product.buyLabor || 0) : (product.sellLabor || 0);
-    const fixed = type === 'buy' ? (product.buyFixed || 1) : (product.sellFixed || 1);
+    const labor = type === 'buy' ? toNum(product.buyLabor) : toNum(product.sellLabor);
+    const fixed = type === 'buy' ? toNum(product.buyFixed, 1) : toNum(product.sellFixed, 1);
 
     if (basePrice === 0) return '-';
 
@@ -149,7 +155,14 @@ const AdminPanel = () => {
       setSaving(true);
       setError('');
 
-      const response = await settingsService.updateSettings({ products });
+      const cleanProducts = products.map(p => ({
+        ...p,
+        buyFixed: toNum(p.buyFixed, 1),
+        sellFixed: toNum(p.sellFixed, 1),
+        buyLabor: toNum(p.buyLabor),
+        sellLabor: toNum(p.sellLabor),
+      }));
+      const response = await settingsService.updateSettings({ products: cleanProducts });
 
       if (response.success) {
         setSuccess('Ayarlar başarıyla kaydedildi!');
@@ -167,19 +180,13 @@ const AdminPanel = () => {
     navigate('/login');
   };
 
-  const parseNum = (v) => {
-    if (v === '' || v === '-') return v;
-    return v.replace(',', '.');
-  };
-
   const handleProductFieldChange = (index, field, value) => {
     setProducts(prev => {
       const updated = [...prev];
       if (field === 'key' || field === 'subtitle') {
         updated[index] = { ...updated[index], [field]: value };
       } else {
-        const normalized = parseNum(value);
-        updated[index] = { ...updated[index], [field]: normalized === '' ? 0 : parseFloat(normalized) || 0 };
+        updated[index] = { ...updated[index], [field]: value.replace(',', '.') };
       }
       return updated;
     });
@@ -551,7 +558,7 @@ const AdminPanel = () => {
                 <TextField
                   label="Alış Sabit Katsayı"
                   value={newProduct.buyFixed}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyFixed: parseFloat(parseNum(e.target.value)) || 1 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyFixed: e.target.value.replace(',', '.') }))}
                   fullWidth
                   inputProps={{ inputMode: 'decimal' }}
                 />
@@ -560,7 +567,7 @@ const AdminPanel = () => {
                 <TextField
                   label="Satış Sabit Katsayı"
                   value={newProduct.sellFixed}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellFixed: parseFloat(parseNum(e.target.value)) || 1 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellFixed: e.target.value.replace(',', '.') }))}
                   fullWidth
                   inputProps={{ inputMode: 'decimal' }}
                 />
@@ -569,7 +576,7 @@ const AdminPanel = () => {
                 <TextField
                   label="Alış İşçilik"
                   value={newProduct.buyLabor}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyLabor: parseFloat(parseNum(e.target.value)) || 0 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyLabor: e.target.value.replace(',', '.') }))}
                   fullWidth
                   inputProps={{ inputMode: 'decimal' }}
                 />
@@ -578,7 +585,7 @@ const AdminPanel = () => {
                 <TextField
                   label="Satış İşçilik"
                   value={newProduct.sellLabor}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellLabor: parseFloat(parseNum(e.target.value)) || 0 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellLabor: e.target.value.replace(',', '.') }))}
                   fullWidth
                   inputProps={{ inputMode: 'decimal' }}
                 />
