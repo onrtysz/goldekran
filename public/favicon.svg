@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="goldMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffdf7a" />
+      <stop offset="100%" stop-color="#b8871f" />
+    </linearGradient>
+    <linearGradient id="goldSoft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffe9a8" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#b8871f" stop-opacity="0.95" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0d0d0d" />
+  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="url(#goldMain)" stroke-width="2.5" />
+  <path d="M32 12l15 7v12c0 11-7 18-15 22-8-4-15-11-15-22V19z" fill="#161616" stroke="url(#goldMain)" stroke-width="1.8" />
+  <path d="M32 21l6 6-6 6-6-6z" fill="url(#goldSoft)" />
+  <path d="M24 41l8-5 8 5" fill="none" stroke="url(#goldSoft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="32" cy="27" r="1.6" fill="#fff2c4" />
+</svg>
