@@ -167,10 +167,20 @@ const AdminPanel = () => {
     navigate('/login');
   };
 
+  const parseNum = (v) => {
+    if (v === '' || v === '-') return v;
+    return v.replace(',', '.');
+  };
+
   const handleProductFieldChange = (index, field, value) => {
     setProducts(prev => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: field === 'key' || field === 'subtitle' ? value : (value === '' ? 0 : parseFloat(value) || 0) };
+      if (field === 'key' || field === 'subtitle') {
+        updated[index] = { ...updated[index], [field]: value };
+      } else {
+        const normalized = parseNum(value);
+        updated[index] = { ...updated[index], [field]: normalized === '' ? 0 : parseFloat(normalized) || 0 };
+      }
       return updated;
     });
   };
@@ -323,21 +333,19 @@ const AdminPanel = () => {
                           <td style={{ padding: '8px' }}>
                             <TextField
                               size="small"
-                              type="number"
                               value={product.buyLabor || ''}
                               onChange={(e) => handleProductFieldChange(index, 'buyLabor', e.target.value)}
                               sx={{ width: '90px' }}
-                              inputProps={{ step: 'any' }}
+                              inputProps={{ inputMode: 'decimal' }}
                             />
                           </td>
                           <td style={{ padding: '8px' }}>
                             <TextField
                               size="small"
-                              type="number"
                               value={product.buyFixed || ''}
                               onChange={(e) => handleProductFieldChange(index, 'buyFixed', e.target.value)}
                               sx={{ width: '90px' }}
-                              inputProps={{ step: 'any' }}
+                              inputProps={{ inputMode: 'decimal' }}
                             />
                           </td>
                           <td style={{ padding: '8px', textAlign: 'center', backgroundColor: '#e8f5e9', fontWeight: 'bold', color: '#35C051' }}>
@@ -346,21 +354,19 @@ const AdminPanel = () => {
                           <td style={{ padding: '8px' }}>
                             <TextField
                               size="small"
-                              type="number"
                               value={product.sellLabor || ''}
                               onChange={(e) => handleProductFieldChange(index, 'sellLabor', e.target.value)}
                               sx={{ width: '90px' }}
-                              inputProps={{ step: 'any' }}
+                              inputProps={{ inputMode: 'decimal' }}
                             />
                           </td>
                           <td style={{ padding: '8px' }}>
                             <TextField
                               size="small"
-                              type="number"
                               value={product.sellFixed || ''}
                               onChange={(e) => handleProductFieldChange(index, 'sellFixed', e.target.value)}
                               sx={{ width: '90px' }}
-                              inputProps={{ step: 'any' }}
+                              inputProps={{ inputMode: 'decimal' }}
                             />
                           </td>
                           <td style={{ padding: '8px', textAlign: 'center', backgroundColor: '#ffebee', fontWeight: 'bold', color: '#e74c3c' }}>
@@ -435,10 +441,9 @@ const AdminPanel = () => {
                             fullWidth
                             size="small"
                             label="Alış İşçilik"
-                            type="number"
                             value={product.buyLabor || ''}
                             onChange={(e) => handleProductFieldChange(index, 'buyLabor', e.target.value)}
-                            inputProps={{ step: 'any' }}
+                            inputProps={{ inputMode: 'decimal' }}
                           />
                         </Grid>
                         <Grid item xs={6}>
@@ -446,10 +451,9 @@ const AdminPanel = () => {
                             fullWidth
                             size="small"
                             label="Alış Sabit"
-                            type="number"
                             value={product.buyFixed || ''}
                             onChange={(e) => handleProductFieldChange(index, 'buyFixed', e.target.value)}
-                            inputProps={{ step: 'any' }}
+                            inputProps={{ inputMode: 'decimal' }}
                           />
                         </Grid>
                         <Grid item xs={6}>
@@ -457,10 +461,9 @@ const AdminPanel = () => {
                             fullWidth
                             size="small"
                             label="Satış İşçilik"
-                            type="number"
                             value={product.sellLabor || ''}
                             onChange={(e) => handleProductFieldChange(index, 'sellLabor', e.target.value)}
-                            inputProps={{ step: 'any' }}
+                            inputProps={{ inputMode: 'decimal' }}
                           />
                         </Grid>
                         <Grid item xs={6}>
@@ -468,10 +471,9 @@ const AdminPanel = () => {
                             fullWidth
                             size="small"
                             label="Satış Sabit"
-                            type="number"
                             value={product.sellFixed || ''}
                             onChange={(e) => handleProductFieldChange(index, 'sellFixed', e.target.value)}
-                            inputProps={{ step: 'any' }}
+                            inputProps={{ inputMode: 'decimal' }}
                           />
                         </Grid>
                       </Grid>
@@ -548,41 +550,37 @@ const AdminPanel = () => {
               <Grid item xs={6}>
                 <TextField
                   label="Alış Sabit Katsayı"
-                  type="number"
                   value={newProduct.buyFixed}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyFixed: parseFloat(e.target.value) || 1 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyFixed: parseFloat(parseNum(e.target.value)) || 1 }))}
                   fullWidth
-                  inputProps={{ step: 'any' }}
+                  inputProps={{ inputMode: 'decimal' }}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   label="Satış Sabit Katsayı"
-                  type="number"
                   value={newProduct.sellFixed}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellFixed: parseFloat(e.target.value) || 1 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellFixed: parseFloat(parseNum(e.target.value)) || 1 }))}
                   fullWidth
-                  inputProps={{ step: 'any' }}
+                  inputProps={{ inputMode: 'decimal' }}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   label="Alış İşçilik"
-                  type="number"
                   value={newProduct.buyLabor}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyLabor: parseFloat(e.target.value) || 0 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, buyLabor: parseFloat(parseNum(e.target.value)) || 0 }))}
                   fullWidth
-                  inputProps={{ step: 'any' }}
+                  inputProps={{ inputMode: 'decimal' }}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   label="Satış İşçilik"
-                  type="number"
                   value={newProduct.sellLabor}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellLabor: parseFloat(e.target.value) || 0 }))}
+                  onChange={(e) => setNewProduct(prev => ({ ...prev, sellLabor: parseFloat(parseNum(e.target.value)) || 0 }))}
                   fullWidth
-                  inputProps={{ step: 'any' }}
+                  inputProps={{ inputMode: 'decimal' }}
                 />
               </Grid>
             </Grid>
