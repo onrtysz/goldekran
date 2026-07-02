@@ -59,7 +59,7 @@ const AdminPanel = () => {
   const [manualGoldPrice, setManualGoldPrice] = useState({ buy: '', sell: '' });
   const [useManualPrice, setUseManualPrice] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [newProduct, setNewProduct] = useState({ key: '', subtitle: '', buyFixed: 1, sellFixed: 1, buyLabor: 0, sellLabor: 0 });
+  const [newProduct, setNewProduct] = useState({ key: '', subtitle: '', buyFixed: '1', sellFixed: '1', buyLabor: '', sellLabor: '' });
 
   const { isAuthenticated, isAdmin, logout, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -194,8 +194,15 @@ const AdminPanel = () => {
 
   const handleAddProduct = () => {
     if (!newProduct.key.trim()) return;
-    setProducts(prev => [...prev, { ...newProduct, key: newProduct.key.trim(), subtitle: newProduct.subtitle.trim() }]);
-    setNewProduct({ key: '', subtitle: '', buyFixed: 1, sellFixed: 1, buyLabor: 0, sellLabor: 0 });
+    setProducts(prev => [...prev, {
+      key: newProduct.key.trim(),
+      subtitle: newProduct.subtitle.trim(),
+      buyFixed: toNum(newProduct.buyFixed, 1),
+      sellFixed: toNum(newProduct.sellFixed, 1),
+      buyLabor: toNum(newProduct.buyLabor),
+      sellLabor: toNum(newProduct.sellLabor),
+    }]);
+    setNewProduct({ key: '', subtitle: '', buyFixed: '1', sellFixed: '1', buyLabor: '', sellLabor: '' });
     setAddDialogOpen(false);
   };
 
